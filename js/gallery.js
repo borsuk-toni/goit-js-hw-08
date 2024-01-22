@@ -65,3 +65,66 @@ const images = [
     description: "Lighthouse Coast Sea",
   },
 ];
+
+const gallery = document.querySelector('.gallery');
+
+function galleryTemplate() {
+
+  const galleryMarkup = images
+    .map(({ preview, original, description }) => {
+      return `<li class="gallery-item">
+    <a class="gallery-link" href="${original}">
+      <img
+        class="gallery-image"
+        src="${preview}"
+        data-source="${original}"
+        alt="${description}"
+      />
+    </a>
+  </li>`;
+    })
+    .join('');
+
+  gallery.innerHTML = galleryMarkup;
+}
+
+galleryTemplate();
+
+gallery.addEventListener('click', event => {
+
+  event.preventDefault();
+  
+  if (event.target === event.currentTarget) return;
+
+  const liElem = event.target;
+  const linkOriginal = liElem.dataset.source;
+  const modalImage = images.find(image => image.original === linkOriginal);
+
+  showOriginalImage(modalImage);
+});
+
+function showOriginalImage(modalImage) {
+  const { preview, original, description } = modalImage;
+
+  const instance = basicLightbox.create(`
+    <img src="${original}"/>`,
+    {
+      onShow: instance => {
+        document.addEventListener('keydown', onModalClose);
+      },
+      onClose: instance => {
+        document.removeEventListener('keydown', onModalClose);
+      },
+    },
+  );
+  
+  instance.show();
+
+  function onModalClose(event) {
+    if (event.code === 'Escape') {
+    instance.close();
+  }
+}
+}
+
+
