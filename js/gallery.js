@@ -94,25 +94,23 @@ gallery.addEventListener('click', event => {
 
   event.preventDefault();
   
-  if (event.target === event.currentTarget) return;
+  if (event.target.classList.contains('gallery-image')) {
 
-  const liElem = event.target;
-  const linkOriginal = liElem.dataset.source;
-  const modalImage = images.find(image => image.original === linkOriginal);
+    const linkOriginal = event.target.dataset.source;
 
-  showOriginalImage(modalImage);
+    showOriginalImage(linkOriginal);
+  }
 });
 
-function showOriginalImage(modalImage) {
-  const { preview, original, description } = modalImage;
+function showOriginalImage(linkOriginal) {
 
   const instance = basicLightbox.create(`
-    <img src="${original}"/>`,
+    <img src="${linkOriginal}"/>`,
     {
-      onShow: instance => {
+      onShow: () => {
         document.addEventListener('keydown', onModalClose);
       },
-      onClose: instance => {
+      onClose: () => {
         document.removeEventListener('keydown', onModalClose);
       },
     },
@@ -126,5 +124,3 @@ function showOriginalImage(modalImage) {
   }
 }
 }
-
-
