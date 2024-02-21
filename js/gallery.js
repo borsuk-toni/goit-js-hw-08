@@ -105,7 +105,7 @@ gallery.addEventListener('click', event => {
 function showOriginalImage(linkOriginal) {
 
   const instance = basicLightbox.create(`
-    <img src="${linkOriginal}"/>`,
+    <img src="${linkOriginal}" alt="${images.description}/>`,
     {
       onShow: () => {
         document.addEventListener('keydown', onModalClose);
