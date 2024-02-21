@@ -88,24 +88,10 @@ function galleryTemplate() {
   gallery.innerHTML = galleryMarkup;
 }
 
-galleryTemplate();
-
-gallery.addEventListener('click', event => {
-
-  event.preventDefault();
-  
-  if (event.target.classList.contains('gallery-image')) {
-
-    const linkOriginal = event.target.dataset.source;
-
-    showOriginalImage(linkOriginal);
-  }
-});
-
-function showOriginalImage(linkOriginal) {
+function showOriginalImage(linkOriginal, altText) {
 
   const instance = basicLightbox.create(`
-    <img src="${linkOriginal}" alt="${images.description}/>`,
+    <img src="${linkOriginal}" alt="${altText}"/>`,
     {
       onShow: () => {
         document.addEventListener('keydown', onModalClose);
@@ -124,3 +110,18 @@ function showOriginalImage(linkOriginal) {
   }
 }
 }
+
+gallery.addEventListener('click', event => {
+
+  event.preventDefault();
+  
+  if (event.target.classList.contains('gallery-image')) {
+
+    const linkOriginal = event.target.dataset.source;
+    const altText = event.target.alt;
+
+    showOriginalImage(linkOriginal, altText);
+  }
+});
+
+galleryTemplate();
